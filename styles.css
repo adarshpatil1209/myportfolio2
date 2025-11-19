@@ -13,7 +13,56 @@ html {
         radial-gradient(circle, rgba(20, 184, 166, 0.06) 1px, transparent 1px);
     background-size: 50px 50px, 80px 80px;
     background-position: 0 0, 25px 25px;
-    z-index: -1;
+    z-index: 0;
+}
+
+/* Particle Canvas */
+#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Underwater Effect Background */
+.underwater-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -2;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.4) 0%, rgba(10, 10, 20, 0.6) 50%, rgba(5, 5, 15, 0.8) 100%);
+    animation: underwater-wave 8s ease-in-out infinite;
+}
+
+@keyframes underwater-wave {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(10px); }
+}
+
+/* Sunlight Effect */
+.sunlight-effect {
+    position: fixed;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 600px;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(ellipse at center, rgba(255, 220, 100, 0.15) 0%, transparent 70%);
+    filter: blur(80px);
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.sunlight-effect.hidden {
+    opacity: 0;
 }
 
 /* Ensure body is black */
@@ -53,6 +102,16 @@ a, button {
 /* Card Glow Effect */
 .group:hover {
     box-shadow: 0 0 20px rgba(20, 184, 166, 0.1);
+}
+
+/* Section Cards Neon Glow */
+.group {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.group:hover {
+    box-shadow: 0 0 20px rgba(20, 184, 166, 0.2), 0 0 40px rgba(20, 184, 166, 0.1), inset 0 0 15px rgba(20, 184, 166, 0.05);
+    border-color: rgba(20, 184, 166, 0.6) !important;
 }
 
 /* Custom text gradient */
@@ -105,6 +164,52 @@ button:active::before {
     height: 300px;
 }
 
+/* Neon Glow on Buttons */
+button {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:hover {
+    box-shadow: 0 0 20px rgba(20, 184, 166, 0.4), 0 0 40px rgba(20, 184, 166, 0.2), inset 0 0 20px rgba(20, 184, 166, 0.1);
+}
+
+/* Neon Glow on Links */
+a:not(nav a) {
+    position: relative;
+}
+
+a:not(nav a):hover {
+    text-shadow: 0 0 10px rgba(20, 184, 166, 0.6), 0 0 20px rgba(20, 184, 166, 0.3);
+}
+
+/* Nav Link Neon Glow */
+nav a {
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+nav a:hover {
+    text-shadow: 0 0 10px rgba(20, 184, 166, 0.5), 0 0 20px rgba(20, 184, 166, 0.3);
+}
+
+/* Input Focus Glow */
+input:focus,
+textarea:focus {
+    outline: none;
+    border-color: #14B8A6;
+    box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1), 0 0 20px rgba(20, 184, 166, 0.3);
+}
+
+/* Glow Badge */
+.inline-block.px-4.py-2.bg-teal-900\/30:hover {
+    box-shadow: 0 0 15px rgba(20, 184, 166, 0.3);
+}
+
+/* Tab Glow Effect */
+.group:focus-within {
+    box-shadow: 0 0 30px rgba(20, 184, 166, 0.2), inset 0 0 20px rgba(20, 184, 166, 0.08);
+}
+
 /* Link hover underline effect */
 a {
     position: relative;
@@ -133,6 +238,16 @@ nav a::after {
     display: none;
 }
 
+/* Nav Link Neon Glow */
+nav a {
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+nav a:hover {
+    text-shadow: 0 0 10px rgba(20, 184, 166, 0.5), 0 0 20px rgba(20, 184, 166, 0.3);
+}
+
 /* Section animations */
 @keyframes fadeInUp {
     from {
@@ -142,6 +257,15 @@ nav a::after {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@keyframes glow-pulse {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(20, 184, 166, 0.1);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(20, 184, 166, 0.2);
     }
 }
 
@@ -186,6 +310,12 @@ section:nth-child(5) { animation-delay: 0.4s; }
     
     body {
         background-color: #000000;
+    }
+
+    /* Enhanced glow in high contrast mode */
+    button:hover,
+    .group:hover {
+        box-shadow: 0 0 30px rgba(20, 184, 166, 0.5), 0 0 60px rgba(20, 184, 166, 0.3);
     }
 }
 
