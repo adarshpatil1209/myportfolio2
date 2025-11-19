@@ -195,14 +195,16 @@ if (hero) {
     const heroObserver = new IntersectionObserver(entries => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
+                // Hero is visible - show visuals
                 document.body.classList.add('visuals-active');
                 if (particleSystem) particleSystem.start();
             } else {
+                // Hero is not visible - hide visuals and pause particles
                 document.body.classList.remove('visuals-active');
                 if (particleSystem) particleSystem.stop();
             }
         });
-    }, { threshold: 0.35 });
+    }, { threshold: 0 }); // Trigger as soon as hero leaves viewport
 
     heroObserver.observe(hero);
 
