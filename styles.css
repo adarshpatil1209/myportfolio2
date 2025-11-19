@@ -65,6 +65,25 @@ html {
     opacity: 0;
 }
 
+/* By default, visuals are hidden. They will be enabled only when the hero
+   (intro) section is visible. Toggle by adding `visuals-active` to `body`. */
+.underwater-bg,
+.mesh-pattern,
+#particle-canvas,
+.sunlight-effect {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.45s ease, visibility 0.45s;
+}
+
+body.visuals-active .underwater-bg,
+body.visuals-active .mesh-pattern,
+body.visuals-active #particle-canvas,
+body.visuals-active .sunlight-effect {
+    opacity: 1;
+    visibility: visible;
+}
+
 /* Ensure body is black with proper z-index */
 body {
     background-color: #0A0A0A;

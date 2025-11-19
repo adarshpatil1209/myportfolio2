@@ -11,10 +11,11 @@ class ParticleSystem {
         this.particleCount = 50;
         this.mouseX = 0;
         this.mouseY = 0;
+        this.raf = null;
+        this.running = false; // start paused; will be started when hero is visible
 
         this.resizeCanvas();
         this.createParticles();
-        this.animate();
 
         window.addEventListener('resize', () => this.resizeCanvas());
         window.addEventListener('mousemove', (e) => {
@@ -134,17 +135,36 @@ class ParticleSystem {
     }
 
     animate() {
+        if (!this.running) return;
         this.update();
         this.draw();
-        requestAnimationFrame(() => this.animate());
+        this.raf = requestAnimationFrame(() => this.animate());
+    }
+
+    start() {
+        if (this.running) return;
+        this.running = true;
+        this.animate();
+    }
+
+    stop() {
+        this.running = false;
+        if (this.raf) {
+            cancelAnimationFrame(this.raf);
+            this.raf = null;
+        }
     }
 }
 
-// Initialize particle system
+// Initialize particle system (paused by default)
 const canvas = document.getElementById('particle-canvas');
+let particleSystem = null;
 if (canvas) {
-    new ParticleSystem(canvas);
+    particleSystem = new ParticleSystem(canvas);
 }
+
+// Ensure mobile menu button reference exists
+const mobileMenuBtn = document.getElementById('mobile-menu-btn');
 
 // ============================================
 // SUNLIGHT EFFECT WITH SCROLL
@@ -168,6 +188,31 @@ window.addEventListener('scroll', () => {
         underwaterBg.style.transform = `translateY(${scrollY * 0.5}px)`;
     }
 });
+
+// Show visuals only when hero (intro) is visible
+const hero = document.getElementById('hero');
+if (hero) {
+    const heroObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                document.body.classList.add('visuals-active');
+                if (particleSystem) particleSystem.start();
+            } else {
+                document.body.classList.remove('visuals-active');
+                if (particleSystem) particleSystem.stop();
+            }
+        });
+    }, { threshold: 0.35 });
+
+    heroObserver.observe(hero);
+
+    // Initial check (in case page loaded scrolled to hero)
+    const rect = hero.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+        document.body.classList.add('visuals-active');
+        if (particleSystem) particleSystem.start();
+    }
+}
 const mobileMenu = document.getElementById('mobile-menu');
 
 mobileMenuBtn.addEventListener('click', () => {
