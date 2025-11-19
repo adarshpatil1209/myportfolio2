@@ -1,0 +1,26 @@
+{
+  "name": "adarsh-patil-portfolio",
+  "version": "1.0.0",
+  "description": "Professional portfolio website for Adarsh Patil - AI/ML Specialist",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000",
+    "build": "echo 'Static site - no build needed'",
+    "serve": "python -m http.server 8000 --directory ."
+  },
+  "keywords": [
+    "portfolio",
+    "ai",
+    "machine-learning",
+    "web-development",
+    "responsive"
+  ],
+  "author": "Adarsh Patil",
+  "license": "MIT",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adarshpatil1209/myportfolio2.git"
+  }
+}
