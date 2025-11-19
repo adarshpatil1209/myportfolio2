@@ -261,7 +261,7 @@ contactNavBtns.forEach(btn => {
 const contactForm = document.getElementById('contact-form');
 const formStatus = document.getElementById('form-status');
 
-contactForm.addEventListener('submit', function (e) {
+contactForm.addEventListener('submit', async function (e) {
     e.preventDefault();
     
     // Get form data
@@ -280,27 +280,36 @@ contactForm.addEventListener('submit', function (e) {
         return;
     }
     
-    // Simulate form submission
+    // Disable button during submission
     const submitBtn = contactForm.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
     submitBtn.textContent = 'Sending...';
     submitBtn.disabled = true;
     
-    // Simulate delay
-    setTimeout(() => {
-        // In a real application, you would send this data to a server
-        console.log('Form Data:', { name, email, message });
+    try {
+        // Submit via Formspree using fetch
+        const response = await fetch(contactForm.action, {
+            method: 'POST',
+            body: new FormData(contactForm),
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
         
-        // Show success message
-        showFormStatus('Message sent successfully! I\'ll get back to you soon.', 'success');
-        
-        // Reset form
-        contactForm.reset();
-        
+        if (response.ok) {
+            showFormStatus('✓ Message sent successfully! I\'ll get back to you soon.', 'success');
+            contactForm.reset();
+        } else {
+            showFormStatus('Failed to send message. Please try again.', 'error');
+        }
+    } catch (error) {
+        console.error('Form submission error:', error);
+        showFormStatus('Error sending message. Please try again.', 'error');
+    } finally {
         // Reset button
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
-    }, 1500);
+    }
 });
 
 // Email validation
