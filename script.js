@@ -1,6 +1,19 @@
 // ============================================
-// PARTICLE SYSTEM WITH CONNECTIONS
+// EMAILJS CONFIGURATION
 // ============================================
+
+// Initialize EmailJS with your Public Key
+// You'll need to set these values after creating an EmailJS account
+const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY'; // Replace with your EmailJS Public Key
+const EMAILJS_SERVICE_ID = 'service_portfolio'; // Service ID you create in EmailJS
+const EMAILJS_TEMPLATE_ID = 'template_contact'; // Template ID you create in EmailJS
+
+// Initialize EmailJS (safe to call multiple times)
+try {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+} catch (error) {
+    console.warn('EmailJS not fully initialized - form will still work but may not send emails');
+}
 
 class ParticleSystem {
     constructor(canvas) {
@@ -287,16 +300,20 @@ contactForm.addEventListener('submit', async function (e) {
     submitBtn.disabled = true;
     
     try {
-        // Submit via Formspree using fetch
-        const response = await fetch(contactForm.action, {
-            method: 'POST',
-            body: new FormData(contactForm),
-            headers: {
-                'Accept': 'application/json'
+        // Send email via EmailJS
+        const response = await emailjs.send(
+            EMAILJS_SERVICE_ID,
+            EMAILJS_TEMPLATE_ID,
+            {
+                to_email: 'adarshpatil862@gmail.com',
+                from_name: name,
+                from_email: email,
+                message: message,
+                reply_to: email
             }
-        });
+        );
         
-        if (response.ok) {
+        if (response.status === 200) {
             showFormStatus('✓ Message sent successfully! I\'ll get back to you soon.', 'success');
             contactForm.reset();
         } else {
